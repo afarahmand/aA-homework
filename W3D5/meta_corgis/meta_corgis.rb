@@ -106,25 +106,30 @@ class MetaCorgiSnacks
     @box_id = box_id
   end
 
-  def method_missing(name, *args)
-    if [:bone, :kibble, :treat].include?(name)
-      info_send_string = "get_" + name.to_s + "_info"
-      tastiness_send_string = "get_" + name.to_s + "_tastiness"
-
-      info = @snack_box.send(info_send_string, @box_id)
-      tastiness = @snack_box.send(tastiness_send_string, @box_id)
-
-      result = ""
-      result+=name.to_s.capitalize + ": #{info}: #{tastiness} "
-      tastiness > 30 ? "* #{result}" : result
-    else
-      super
-    end
-  end
-
+  # def method_missing(name, *args)
+  #   if [:bone, :kibble, :treat].include?(name)
+  #     info_send_string = "get_" + name.to_s + "_info"
+  #     tastiness_send_string = "get_" + name.to_s + "_tastiness"
+  #
+  #     info = @snack_box.send(info_send_string, @box_id)
+  #     tastiness = @snack_box.send(tastiness_send_string, @box_id)
+  #
+  #     result = ""
+  #     result+=name.to_s.capitalize + ": #{info}: #{tastiness} "
+  #     tastiness > 30 ? "* #{result}" : result
+  #   else
+  #     super
+  #   end
+  # end
 
   def self.define_snack(name)
-    # Your code goes here...
+    define_method(name) do
+      info = @snack_box.send("get_#{name}_info", @box_id)
+      tastiness = @snack_box.send("get_#{name}_tastiness", @box_id)
+      display_name = "#{name.split('_').map(&:capitalize).join(' ')}"
+      result = "#{display_name}: #{info}: #{tastiness}"
+      tastiness > 30 ? "* #{result}" : result
+    end
   end
 end
 
@@ -132,7 +137,6 @@ end
 snack_box = SnackBox.new
 mc = MetaCorgiSnacks.new(snack_box, 1)
 
-#p [].send(:count)
 #p snack_box.get_bone_info(1)
 
 p "#{mc.bone}"
