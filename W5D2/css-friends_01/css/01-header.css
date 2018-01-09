@@ -1,0 +1,31 @@
+/* PHASE 1: Header */
+header {
+  background-color: red;
+  color: white;
+  font-family: Roboto;
+  width: 100%;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+nav div ul {
+  display: flex;
+}
+
+div#left-nav, nav li {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 15px;
+  padding-left: 15px;
+  border: 1px solid #ccc;
+}
+
+div#left-nav:hover, nav li:hover {
+  background-color: black;
+  cursor: pointer;
+}
